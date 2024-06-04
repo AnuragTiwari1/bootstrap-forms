@@ -20,7 +20,7 @@ const validationSchema = Yup.object({
 });
 
 export const EmailForm: React.FC<EmailFormProps> = (props) => {
-  const { isActive, onSubmit, onSubmittedValueChange } = props;
+  const { isActive, onSubmit, onSubmittedValueChange, initialValues } = props;
 
   return (
     <div
@@ -29,7 +29,7 @@ export const EmailForm: React.FC<EmailFormProps> = (props) => {
       aria-labelledby="email-tab"
     >
       <Formik
-        initialValues={{ email: "", mobile: "" }}
+        initialValues={initialValues as EmailFormData}
         validationSchema={validationSchema}
         onSubmit={(values, actions) => {
           actions.setSubmitting(false);
@@ -50,52 +50,71 @@ export const EmailForm: React.FC<EmailFormProps> = (props) => {
             noValidate
             onSubmit={handleSubmit}
           >
-            <div className="form-group">
-              <label htmlFor="email">Email Address*</label>
-              <input
-                type="email"
-                id="email"
-                autoComplete="email"
-                className={`form-control ${
-                  touched.email
-                    ? errors.email
-                      ? "is-invalid"
-                      : "is-valid"
-                    : ""
-                }`}
-                required
-                onChange={(e) => {
-                  handleChange(e);
-                  onSubmittedValueChange();
-                }}
-                onBlur={handleBlur}
-                value={values.email}
-              />
+            <div className="form-group row">
+              <div className="col-md-2">
+                <label htmlFor="email">
+                  Email Address<span className="text-danger"> * </span>
+                </label>
+              </div>
+              <div className="col-md-4">
+                <input
+                  type="email"
+                  id="email"
+                  autoComplete="email"
+                  className={`form-control ${
+                    touched.email
+                      ? errors.email
+                        ? "is-invalid"
+                        : "is-valid"
+                      : ""
+                  }`}
+                  required
+                  onChange={(e) => {
+                    handleChange(e);
+                    onSubmittedValueChange();
+                  }}
+                  onBlur={handleBlur}
+                  value={values.email}
+                  placeholder="Enter your email"
+                />
+              </div>
               <div className="invalid-feedback">{errors.email}</div>
             </div>
-            <div className="form-group">
-              <label htmlFor="mobile">Mobile Number*</label>
-              <input
-                type="text"
-                className={`form-control ${
-                  touched.mobile
-                    ? errors.mobile
-                      ? "is-invalid"
-                      : "is-valid"
-                    : ""
-                }`}
-                id="mobile"
-                required
-                onChange={(e) => {
-                  handleChange(e);
-                  onSubmittedValueChange();
-                }}
-                onBlur={handleBlur}
-                value={values.mobile}
-              />
+            <div className="form-group mt-3">
+              <div className="row">
+                <div className="col-md-2">
+                  <label htmlFor="mobile">
+                    Mobile Number<span className="text-danger"> * </span>
+                  </label>
+                </div>
+                <div className="col-md-4">
+                  <input
+                    type="text"
+                    className={`form-control ${
+                      touched.mobile
+                        ? errors.mobile
+                          ? "is-invalid"
+                          : "is-valid"
+                        : ""
+                    }`}
+                    id="mobile"
+                    required
+                    onChange={(e) => {
+                      handleChange(e);
+                      onSubmittedValueChange();
+                    }}
+                    onBlur={handleBlur}
+                    value={values.mobile}
+                  />
+                </div>
+              </div>
               <div className="invalid-feedback">{errors.mobile}</div>
             </div>
-            <button type="submit" className="btn btn-success">
+
+            <button
+              type="submit"
+              className="btn btn-success mt-5 btn-lg float-right"
+            >
               Continue
             </button>
           </form>
