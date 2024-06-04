@@ -1,7 +1,26 @@
+import { Formik } from "formik";
 import { EmailFormData, FormProps } from "./types";
 
-export const EmailForm: React.FC<FormProps<EmailFormData>> = (props) => {
-  const { isActive } = props;
+import * as Yup from "yup";
+
+type EmailFormProps = FormProps<EmailFormData> & {
+  onSubmittedValueChange: () => void;
+};
+
+const validationSchema = Yup.object({
+  email: Yup.string()
+    .email("Please provide valid email address")
+    .required("This field is required"),
+  mobile: Yup.string()
+    .matches(
+      /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/,
+      "Please provide valid phone number"
+    )
+    .required("This field is required"),
+});
+
+export const EmailForm: React.FC<EmailFormProps> = (props) => {
+  const { isActive, onSubmit, onSubmittedValueChange } = props;
 
   return (
     <div
@@ -9,35 +28,79 @@ export const EmailForm: React.FC<FormProps<EmailFormData>> = (props) => {
       role="tabpanel"
       aria-labelledby="email-tab"
     >
-      <form
-        id="emailForm"
-        onSubmit={(e) => {
-          e.preventDefault();
-          console.log("the form has been submitted");
+      <Formik
+        initialValues={{ email: "", mobile: "" }}
+        validationSchema={validationSchema}
+        onSubmit={(values, actions) => {
+          actions.setSubmitting(false);
+          onSubmit(values);
         }}
       >
-        <div className="form-group">
-          <label htmlFor="email">Email Address*</label>
-          <input type="email" className="form-control" id="email" required />
-          <div className="invalid-feedback">
-            Please enter a valid email address.
-          </div>
-        </div>
-        <div className="form-group">
-          <label htmlFor="mobile">Mobile Number*</label>
-          <input
-            type="text"
-            className="form-control"
-            id="mobile"
-            pattern="^\+91\d{10}$"
-            required
-          />
-          <div className="invalid-feedback">Mobile Number is not valid.</div>
-        </div>
-        <button type="submit" className="btn btn-success">
-          Continue
-        </button>
-      </form>
+        {({
+          handleChange,
+          handleBlur,
+          handleSubmit,
+          values,
+          errors,
+          touched,
+        }) => (
+          <form
+            id="emailForm"
+            className={`needs-validation`}
+            noValidate
+            onSubmit={handleSubmit}
+          >
+            <div className="form-group">
+              <label htmlFor="email">Email Address*</label>
+              <input
+                type="email"
+                id="email"
+                autoComplete="email"
+                className={`form-control ${
+                  touched.email
+                    ? errors.email
+                      ? "is-invalid"
+                      : "is-valid"
+                    : ""
+                }`}
+                required
+                onChange={(e) => {
+                  handleChange(e);
+                  onSubmittedValueChange();
+                }}
+                onBlur={handleBlur}
+                value={values.email}
+              />
+              <div className="invalid-feedback">{errors.email}</div>
+            </div>
+            <div className="form-group">
+              <label htmlFor="mobile">Mobile Number*</label>
+              <input
+                type="text"
+                className={`form-control ${
+                  touched.mobile
+                    ? errors.mobile
+                      ? "is-invalid"
+                      : "is-valid"
+                    : ""
+                }`}
+                id="mobile"
+                required
+                onChange={(e) => {
+                  handleChange(e);
+                  onSubmittedValueChange();
+                }}
+                onBlur={handleBlur}
+                value={values.mobile}
+              />
+              <div className="invalid-feedback">{errors.mobile}</div>
+            </div>
+            <button type="submit" className="btn btn-success">
+              Continue
+            </button>
+          </form>
+        )}
+      </Formik>
     </div>
   );
 };

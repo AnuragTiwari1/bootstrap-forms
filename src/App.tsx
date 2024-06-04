@@ -1,13 +1,19 @@
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { EmailForm } from "./components/email-form";
 import { TravelerForm } from "./components/traveller-form";
+import { EmailFormData } from "./components/types";
 
 const App: React.FC = () => {
   const [activeTab, setActiveTab] = useState<"email" | "traveler">("email");
   const [isEmailFormSubmitted, setIsEmailFormSubmitted] =
     useState<boolean>(false);
 
-  console.log("the active tabe is>>>>>>>", activeTab);
+  const handleEmailFormSubmit = useCallback((values: EmailFormData) => {
+    console.log("the Email form values are >>>>>>", values);
+    setIsEmailFormSubmitted(true);
+
+    setActiveTab("traveler");
+  }, []);
 
   return (
     <div className="container">
@@ -39,7 +45,15 @@ const App: React.FC = () => {
       </ul>
 
       <div className="tab-content">
-        <EmailForm isActive={activeTab === "email"} onSubmit={() => {}} />
+        <EmailForm
+          isActive={activeTab === "email"}
+          onSubmit={handleEmailFormSubmit}
+          onSubmittedValueChange={() => {
+            if (setIsEmailFormSubmitted) {
+              setIsEmailFormSubmitted(false);
+            }
+          }}
+        />
 
         <TravelerForm isActive={activeTab === "traveler"} onSubmit={() => {}} />
       </div>
