@@ -4,7 +4,7 @@ export interface EmailFormData {
 }
 
 export interface Traveler {
-  prefix: "Mr" | "Mrs" | "Master";
+  prefix: "Mr" | "Mrs" | "Master" | "Miss";
   firstName: string;
   lastName: string;
   isLeadContact: boolean;

@@ -9,17 +9,27 @@ type AppFormState = {
 };
 
 const initialFormState: AppFormState = {
-  userInfo: { email: "", mobile: "" },
+  userInfo: { email: "myEmail@gmail.com", mobile: "9607155846" },
   travelerInfo: {
     room: [
       [
-        { firstName: "", lastName: "", isLeadContact: true, prefix: "Mr" },
+        {
+          firstName: "Anurag",
+          lastName: "Tiwari",
+          isLeadContact: true,
+          prefix: "Mr",
+        },
         { firstName: "", lastName: "", isLeadContact: false, prefix: "Master" },
         { firstName: "", lastName: "", isLeadContact: false, prefix: "Master" },
       ],
       [
-        { firstName: "", lastName: "", isLeadContact: false, prefix: "Mr" },
-        { firstName: "", lastName: "", isLeadContact: false, prefix: "Master" },
+        {
+          firstName: "Nitesh",
+          lastName: "Tiwari",
+          isLeadContact: false,
+          prefix: "Mr",
+        },
+        { firstName: "Test", lastName: "", isLeadContact: false, prefix: "Mr" },
         { firstName: "", lastName: "", isLeadContact: false, prefix: "Master" },
       ],
     ],
@@ -93,7 +103,7 @@ const App: React.FC = () => {
               <TravelerForm
                 initialValues={formState.travelerInfo}
                 isActive={activeTab === "traveler"}
-                onSubmit={() => {}}
+                onSubmit={console.log}
               />
             </div>
           </div>

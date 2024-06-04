@@ -1,7 +1,24 @@
+import { FieldArray, Formik, useFormikContext } from "formik";
 import { FormProps, TravelerFormData } from "./types";
+import * as Yup from "yup";
+
+const schema = Yup.object().shape({
+  room: Yup.array().of(
+    Yup.array().of(
+      Yup.object().shape({
+        firstName: Yup.string()
+          .max(30, "Must be less than 30 characters")
+          .required("This Field is required"),
+        lastName: Yup.string()
+          .max(30, "Must be less than 30 characters")
+          .required("This Field is required"),
+      })
+    )
+  ),
+});
 
 export const TravelerForm: React.FC<FormProps<TravelerFormData>> = (props) => {
-  const { isActive } = props;
+  const { isActive, onSubmit, initialValues } = props;
 
   return (
     <div
@@ -9,175 +26,126 @@ export const TravelerForm: React.FC<FormProps<TravelerFormData>> = (props) => {
       role="tabpanel"
       aria-labelledby="traveller-tab"
     >
-      <form id="travellerForm">
-        <div id="roomContainer" />
-        <div className="room" id="room1">
-          <h5>Room 1</h5>
-          <div className="form-row">
-            <div className="form-group col-md-2">
-              <label htmlFor="title1">Title</label>
-              <select className="form-control" id="title1" required>
-                <option>Mr</option>
-                <option>Master</option>
-              </select>
-            </div>
-            <div className="form-group col-md-5">
-              <label htmlFor="firstName1">First Name</label>
-              <input
-                type="text"
-                className="form-control"
-                id="firstName1"
-                required
-              />
-            </div>
-            <div className="form-group col-md-5">
-              <label htmlFor="lastName1">Last Name</label>
-              <input
-                type="text"
-                className="form-control"
-                id="lastName1"
-                required
-              />
-            </div>
-          </div>
-          <div className="form-row">
-            <div className="form-group col-md-2">
-              <label htmlFor="title2">Title</label>
-              <select className="form-control" id="title2" required>
-                <option>Master</option>
-              </select>
-            </div>
-            <div className="form-group col-md-5">
-              <label htmlFor="firstName2">First Name</label>
-              <input
-                type="text"
-                className="form-control"
-                id="firstName2"
-                required
-              />
-            </div>
-            <div className="form-group col-md-5">
-              <label htmlFor="lastName2">Last Name</label>
-              <input
-                type="text"
-                className="form-control"
-                id="lastName2"
-                required
-              />
-            </div>
-          </div>
-          <div className="form-row">
-            <div className="form-group col-md-2">
-              <label htmlFor="title3">Title</label>
-              <select className="form-control" id="title3" required>
-                <option>Master</option>
-              </select>
-            </div>
-            <div className="form-group col-md-5">
-              <label htmlFor="firstName3">First Name</label>
-              <input
-                type="text"
-                className="form-control"
-                id="firstName3"
-                required
-              />
-            </div>
-            <div className="form-group col-md-5">
-              <label htmlFor="lastName3">Last Name</label>
-              <input
-                type="text"
-                className="form-control"
-                id="lastName3"
-                required
-              />
-            </div>
-          </div>
-        </div>
-        <div className="room" id="room2">
-          <h5>Room 2</h5>
-          <div className="form-row">
-            <div className="form-group col-md-2">
-              <label htmlFor="title4">Title</label>
-              <select className="form-control" id="title4" required>
-                <option>Mr</option>
-              </select>
-            </div>
-            <div className="form-group col-md-5">
-              <label htmlFor="firstName4">First Name</label>
-              <input
-                type="text"
-                className="form-control"
-                id="firstName4"
-                required
-              />
-            </div>
-            <div className="form-group col-md-5">
-              <label htmlFor="lastName4">Last Name</label>
-              <input
-                type="text"
-                className="form-control"
-                id="lastName4"
-                required
-              />
-            </div>
-          </div>
-          <div className="form-row">
-            <div className="form-group col-md-2">
-              <label htmlFor="title5">Title</label>
-              <select className="form-control" id="title5" required>
-                <option>Mr</option>
-              </select>
-            </div>
-            <div className="form-group col-md-5">
-              <label htmlFor="firstName5">First Name</label>
-              <input
-                type="text"
-                className="form-control"
-                id="firstName5"
-                required
-              />
-            </div>
-            <div className="form-group col-md-5">
-              <label htmlFor="lastName5">Last Name</label>
-              <input
-                type="text"
-                className="form-control"
-                id="lastName5"
-                required
-              />
-            </div>
-          </div>
-          <div className="form-row">
-            <div className="form-group col-md-2">
-              <label htmlFor="title6">Title</label>
-              <select className="form-control" id="title6" required>
-                <option>Master</option>
-              </select>
-            </div>
-            <div className="form-group col-md-5">
-              <label htmlFor="firstName6">First Name</label>
-              <input
-                type="text"
-                className="form-control"
-                id="firstName6"
-                required
-              />
-            </div>
-            <div className="form-group col-md-5">
-              <label htmlFor="lastName6">Last Name</label>
-              <input
-                type="text"
-                className="form-control"
-                id="lastName6"
-                required
-              />
-            </div>
-          </div>
-        </div>
-        <button type="submit" className="btn btn-success">
-          Submit
-        </button>
-      </form>
+      <div className="container">
+        <Formik
+          initialValues={initialValues as TravelerFormData}
+          validationSchema={schema}
+          onSubmit={(values, actions) => {
+            actions.setSubmitting(false);
+            onSubmit(values);
+          }}
+        >
+          {({ handleSubmit }) => (
+            <form
+              id="travelerForm"
+              className={`needs-validation`}
+              noValidate
+              onSubmit={handleSubmit}
+            >
+              <FieldArray name="room">{() => <Rooms />}</FieldArray>
+
+              <button type="submit" className="btn btn-success">
+                Submit
+              </button>
+            </form>
+          )}
+        </Formik>
+      </div>
     </div>
   );
+};
+
+const Rooms = () => {
+  const { values, handleChange, handleBlur, errors, touched } =
+    useFormikContext<TravelerFormData>();
+
+  return values.room.map((e, i) => (
+    <div className="room" key={`room${i + 1}`}>
+      <h5>Room {i + 1}</h5>
+      <div className="row">
+        <span className="col-md-2">Pax Details</span>
+        <span className="col"></span>
+        <span className="col-md-2">Select Lead Guest</span>
+      </div>
+      <FieldArray name={`room.${i}`}>
+        {() =>
+          values.room[i].map((k, j) => (
+            <div className="row my-4" key={`room${i + 1}_person${j + 1}`}>
+              <div className="form-group col-md-2">
+                <select
+                  className="form-control"
+                  required
+                  name={`room.${i}.${j}.prefix`}
+                  value={values.room[i][j].prefix}
+                  onChange={handleChange}
+                >
+                  <option value="Mr">Mr</option>
+                  <option value="Mrs">Mrs</option>
+                  <option value="Master">Master</option>
+                  <option value="Miss">Miss</option>
+                </select>
+              </div>
+              <div className="col-md-4">
+                <input
+                  type="text"
+                  className={`form-control ${
+                    touched?.room?.[i]?.[j]?.firstName
+                      ? typeof errors.room?.[i]?.[j].firstName === "string"
+                        ? "is-invalid"
+                        : "is-valid"
+                      : ""
+                  }`}
+                  placeholder="First Name"
+                  required
+                  name={`room.${i}.${j}.firstName`}
+                  value={values.room[i]?.[j].firstName}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                />
+                <div className="invalid-feedback">
+                  {errors?.room?.[i]?.[j]?.firstName}
+                </div>
+              </div>
+              <div className="col-md-4">
+                <input
+                  type="text"
+                  className={`form-control ${
+                    touched?.room?.[i]?.[j]?.lastName
+                      ? typeof errors.room?.[i]?.[j].lastName === "string"
+                        ? "is-invalid"
+                        : "is-valid"
+                      : ""
+                  }`}
+                  id="lastName"
+                  placeholder="Last Name"
+                  required
+                  name={`room.${i}.${j}.lastName`}
+                  value={values.room[i][j].lastName}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                />
+                <div className="invalid-feedback">
+                  {errors?.room?.[i]?.[j]?.lastName}
+                </div>
+              </div>
+              <div className="form-group col-md-2">
+                <select
+                  className="form-control"
+                  required
+                  name={`room.${i}.${j}.prefix`}
+                  value={values.room[i][j].prefix}
+                  onChange={handleChange}
+                >
+                  <option value="Mr">Mr</option>
+                  <option value="Mrs">Mrs</option>
+                  <option value="Master">Master</option>
+                  <option value="Miss">Miss</option>
+                </select>
+              </div>
+            </div>
+          ))
+        }
+      </FieldArray>
+    </div>
+  ));
 };
