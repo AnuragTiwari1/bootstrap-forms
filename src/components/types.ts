@@ -7,11 +7,13 @@ export interface Traveler {
   prefix: "Mr" | "Mrs" | "Master" | "Miss";
   firstName: string;
   lastName: string;
-  isLeadContact: boolean;
 }
 
 export interface TravelerFormData {
-  room: Traveler[][];
+  room: {
+    travelers: Traveler[];
+    leadContactIndex?: string;
+  }[];
 }
 
 export type FormProps<T> = {

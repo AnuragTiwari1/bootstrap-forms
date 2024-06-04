@@ -9,29 +9,48 @@ type AppFormState = {
 };
 
 const initialFormState: AppFormState = {
-  userInfo: { email: "myEmail@gmail.com", mobile: "9607155846" },
+  userInfo: { email: "", mobile: "" },
   travelerInfo: {
     room: [
-      [
-        {
-          firstName: "Anurag",
-          lastName: "Tiwari",
-          isLeadContact: true,
-          prefix: "Mr",
-        },
-        { firstName: "", lastName: "", isLeadContact: false, prefix: "Master" },
-        { firstName: "", lastName: "", isLeadContact: false, prefix: "Master" },
-      ],
-      [
-        {
-          firstName: "Nitesh",
-          lastName: "Tiwari",
-          isLeadContact: false,
-          prefix: "Mr",
-        },
-        { firstName: "Test", lastName: "", isLeadContact: false, prefix: "Mr" },
-        { firstName: "", lastName: "", isLeadContact: false, prefix: "Master" },
-      ],
+      {
+        travelers: [
+          {
+            firstName: "",
+            lastName: "",
+            prefix: "Mr",
+          },
+          {
+            firstName: "",
+            lastName: "",
+            prefix: "Master",
+          },
+          {
+            firstName: "",
+            lastName: "",
+            prefix: "Master",
+          },
+        ],
+        leadContactIndex: "0",
+      },
+      {
+        travelers: [
+          {
+            firstName: "",
+            lastName: "",
+            prefix: "Mr",
+          },
+          {
+            firstName: "",
+            lastName: "",
+            prefix: "Mr",
+          },
+          {
+            firstName: "",
+            lastName: "",
+            prefix: "Master",
+          },
+        ],
+      },
     ],
   },
 };
