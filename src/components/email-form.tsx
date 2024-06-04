@@ -20,7 +20,7 @@ const validationSchema = Yup.object({
 });
 
 export const EmailForm: React.FC<EmailFormProps> = (props) => {
-  const { isActive, onSubmit, onSubmittedValueChange } = props;
+  const { isActive, onSubmit, onSubmittedValueChange, initialValues } = props;
 
   return (
     <div
@@ -29,7 +29,7 @@ export const EmailForm: React.FC<EmailFormProps> = (props) => {
       aria-labelledby="email-tab"
     >
       <Formik
-        initialValues={{ email: "", mobile: "" }}
+        initialValues={initialValues as EmailFormData}
         validationSchema={validationSchema}
         onSubmit={(values, actions) => {
           actions.setSubmitting(false);

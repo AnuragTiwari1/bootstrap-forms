@@ -1,16 +1,42 @@
 import { useCallback, useState } from "react";
 import { EmailForm } from "./components/email-form";
 import { TravelerForm } from "./components/traveller-form";
-import { EmailFormData } from "./components/types";
+import { EmailFormData, TravelerFormData } from "./components/types";
+
+type AppFormState = {
+  userInfo: EmailFormData;
+  travelerInfo: TravelerFormData;
+};
+
+const initialFormState: AppFormState = {
+  userInfo: { email: "", mobile: "" },
+  travelerInfo: {
+    room: [
+      [
+        { firstName: "", lastName: "", isLeadContact: true, prefix: "Mr" },
+        { firstName: "", lastName: "", isLeadContact: false, prefix: "Master" },
+        { firstName: "", lastName: "", isLeadContact: false, prefix: "Master" },
+      ],
+      [
+        { firstName: "", lastName: "", isLeadContact: false, prefix: "Mr" },
+        { firstName: "", lastName: "", isLeadContact: false, prefix: "Master" },
+        { firstName: "", lastName: "", isLeadContact: false, prefix: "Master" },
+      ],
+    ],
+  },
+};
 
 const App: React.FC = () => {
   const [activeTab, setActiveTab] = useState<"email" | "traveler">("email");
   const [isEmailFormSubmitted, setIsEmailFormSubmitted] =
     useState<boolean>(false);
 
+  const [formState, setFormState] = useState<AppFormState>(initialFormState);
+
   const handleEmailFormSubmit = useCallback((values: EmailFormData) => {
     console.log("the Email form values are >>>>>>", values);
     setIsEmailFormSubmitted(true);
+    setFormState((prevState) => ({ ...prevState, userInfo: values }));
 
     setActiveTab("traveler");
   }, []);
@@ -54,6 +80,7 @@ const App: React.FC = () => {
 
             <div className="tab-content">
               <EmailForm
+                initialValues={formState.userInfo}
                 isActive={activeTab === "email"}
                 onSubmit={handleEmailFormSubmit}
                 onSubmittedValueChange={() => {
@@ -64,6 +91,7 @@ const App: React.FC = () => {
               />
 
               <TravelerForm
+                initialValues={formState.travelerInfo}
                 isActive={activeTab === "traveler"}
                 onSubmit={() => {}}
               />
