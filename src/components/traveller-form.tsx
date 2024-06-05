@@ -64,8 +64,15 @@ export const TravelerForm: React.FC<FormProps<TravelerFormData>> = (props) => {
 };
 
 const Rooms = () => {
-  const { values, handleChange, handleBlur, errors, touched } =
-    useFormikContext<TravelerFormData>();
+  const {
+    values,
+    handleChange,
+    handleBlur,
+    errors,
+    touched,
+    setFieldValue,
+    submitCount,
+  } = useFormikContext<TravelerFormData>();
 
   return values.room.map((e, i) => (
     <div className="room " key={`room${i + 1}`}>
@@ -86,7 +93,10 @@ const Rooms = () => {
                   required
                   name={`room.${i}.travelers.${j}.prefix`}
                   value={values.room[i].travelers?.[j].prefix}
-                  onChange={handleChange}
+                  onChange={(e) => {
+                    handleChange(e);
+                    setFieldValue(`room.${i}.leadContactIndex`, undefined);
+                  }}
                 >
                   <option value="Mr">Mr</option>
                   <option value="Mrs">Mrs</option>
@@ -155,7 +165,11 @@ const Rooms = () => {
           ))
         }
       </FieldArray>
-      <div className="text-danger">{errors?.room?.[i]?.leadContactIndex}</div>
+      <div
+        className={`invalid-feedback ${submitCount > 0 ? "d-block" : ""}`}
+      >
+        {errors?.room?.[i]?.leadContactIndex}
+      </div>
     </div>
   ));
 };
