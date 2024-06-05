@@ -51,12 +51,12 @@ export const EmailForm: React.FC<EmailFormProps> = (props) => {
             onSubmit={handleSubmit}
           >
             <div className="form-group row">
-              <div className="col-md-2">
+              <div className="col-md-2 offset-md-2">
                 <label htmlFor="email">
                   Email Address<span className="text-danger"> * </span>
                 </label>
               </div>
-              <div className="col-md-4">
+              <div className="col-md-5 ">
                 <input
                   type="email"
                   id="email"
@@ -82,12 +82,12 @@ export const EmailForm: React.FC<EmailFormProps> = (props) => {
             </div>
             <div className="form-group mt-3">
               <div className="row">
-                <div className="col-md-2">
+                <div className="col-md-2 offset-md-2">
                   <label htmlFor="mobile">
                     Mobile Number<span className="text-danger"> * </span>
                   </label>
                 </div>
-                <div className="col-md-4">
+                <div className="col-md-5">
                   <input
                     type="text"
                     className={`form-control ${
@@ -111,12 +111,14 @@ export const EmailForm: React.FC<EmailFormProps> = (props) => {
               <div className="invalid-feedback">{errors.mobile}</div>
             </div>
 
-            <button
-              type="submit"
-              className="btn btn-success mt-5 btn-lg float-right"
-            >
-              Continue
-            </button>
+            <div className="d-flex justify-content-end ">
+              <button
+                type="submit"
+                className="btn btn-success mt-5 btn-lg float-right continuebtn"
+              >
+                Continue →
+              </button>
+            </div>
           </form>
         )}
       </Formik>

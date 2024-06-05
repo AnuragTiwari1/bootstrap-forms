@@ -71,19 +71,21 @@ const App: React.FC = () => {
   }, []);
 
   return (
-    <div className="container mt-5 ">
-      <div className="row ">
+    <div className="container mt-5">
+      <div className="row">
         <div className="col-md-10 bg-light offset-md-1">
-          <div className=" card border m-3  p-5">
+          <div className="card border m-3 p-5">
             <h4 className="text-primary mb-4">Book In 2 Simple Steps</h4>
-            <ul className="nav nav-tabs mb-5" id="myTab" role="tablist">
-              <li
-                className={`nav-item ${
-                  activeTab === "traveler" ? "active" : ""
-                }`}
-              >
+            <ul
+              className="nav nav-tabs mb-5 nav-justified"
+              id="myTab"
+              role="tablist"
+            >
+              <li className="nav-item">
                 <button
-                  className="nav-link active"
+                  className={`nav-link ${
+                    activeTab === "email" ? "active" : ""
+                  } ${isEmailFormSubmitted ? "completed" : ""}`}
                   role="tab"
                   aria-controls="email-tab"
                   aria-selected={activeTab === "email"}

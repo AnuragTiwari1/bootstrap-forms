@@ -47,9 +47,14 @@ export const TravelerForm: React.FC<FormProps<TravelerFormData>> = (props) => {
             >
               <FieldArray name="room">{() => <Rooms />}</FieldArray>
 
-              <button type="submit" className="btn btn-success">
-                Submit
-              </button>
+              <div className="d-flex justify-content-end ">
+                <button
+                  type="submit"
+                  className="btn btn-success mt-5 btn-lg float-right continuebtn"
+                >
+                  Submit
+                </button>
+              </div>
             </form>
           )}
         </Formik>
@@ -63,10 +68,11 @@ const Rooms = () => {
     useFormikContext<TravelerFormData>();
 
   return values.room.map((e, i) => (
-    <div className="room" key={`room${i + 1}`}>
-      <h5>Room {i + 1}</h5>
+    <div className="room " key={`room${i + 1}`}>
+      <h5 className="text-primary">Room {i + 1}</h5>
+      <div className="border-dotted mb-4"></div>
       <div className="row">
-        <span className="col-md-2">Pax Details</span>
+        <span className="col-md-2 fw-bold">Pax Details</span>
         <span className="col"></span>
         <span className="col-md-2">Select Lead Guest</span>
       </div>

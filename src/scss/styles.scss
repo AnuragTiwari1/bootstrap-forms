@@ -1,1 +1,32 @@
 @import "bootstrap/scss/bootstrap";
+
+.continuebtn {
+  border-radius: 0px;
+  width: 300px;
+}
+
+.border-dotted {
+  border-bottom-style: dotted;
+  color: rgb(180, 180, 180);
+}
+
+.nav-tabs .nav-item .nav-link.active {
+  color: white;
+  background-color: #33a955;
+  border-radius: 0px;
+}
+
+.nav-tabs .nav-item .nav-link.completed {
+  color: #33a955;
+  background-color: #f8f9fb; /* Different shade for completed but not active */
+  border-radius: 0px;
+}
+
+.nav-tabs .nav-item .nav-link {
+  background-color: #f8f9fb;
+  color: grey;
+}
+
+.nav-link {
+  height: 60px;
+}
