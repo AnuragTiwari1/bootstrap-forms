@@ -2,6 +2,7 @@ import { Formik } from "formik";
 import { EmailFormData, FormProps } from "./types";
 
 import * as Yup from "yup";
+import { PhoneInput } from "react-international-phone";
 
 type EmailFormProps = FormProps<EmailFormData> & {
   onSubmittedValueChange: () => void;
@@ -13,7 +14,7 @@ const validationSchema = Yup.object({
     .required("This field is required"),
   mobile: Yup.string()
     .matches(
-      /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/,
+      /^([0|\+[0-9]{1,5})?([7-9][0-9]{9})$/,
       "Please provide valid phone number"
     )
     .required("This field is required"),
@@ -43,6 +44,7 @@ export const EmailForm: React.FC<EmailFormProps> = (props) => {
           values,
           errors,
           touched,
+          setFieldValue,
         }) => (
           <form
             id="emailForm"
@@ -61,7 +63,7 @@ export const EmailForm: React.FC<EmailFormProps> = (props) => {
                   type="email"
                   id="email"
                   autoComplete="email"
-                  className={`form-control ${
+                  className={`form-control large-input ${
                     touched.email
                       ? errors.email
                         ? "is-invalid"
@@ -77,8 +79,8 @@ export const EmailForm: React.FC<EmailFormProps> = (props) => {
                   value={values.email}
                   placeholder="Enter your email"
                 />
+                <div className="invalid-feedback">{errors.email}</div>
               </div>
-              <div className="invalid-feedback">{errors.email}</div>
             </div>
             <div className="form-group mt-3">
               <div className="row">
@@ -88,8 +90,14 @@ export const EmailForm: React.FC<EmailFormProps> = (props) => {
                   </label>
                 </div>
                 <div className="col-md-5">
-                  <input
-                    type="text"
+                  <PhoneInput
+                    defaultCountry="in"
+                    inputClassName="phone-input"
+                    inputStyle={{ border: "none", width: "100%" }}
+                    countrySelectorStyleProps={{
+                      buttonStyle: { border: "none" },
+                    }}
+                    value={values.mobile}
                     className={`form-control ${
                       touched.mobile
                         ? errors.mobile
@@ -97,18 +105,16 @@ export const EmailForm: React.FC<EmailFormProps> = (props) => {
                           : "is-valid"
                         : ""
                     }`}
-                    id="mobile"
-                    required
-                    onChange={(e) => {
-                      handleChange(e);
+                    onChange={(phone) => {
+                      setFieldValue("mobile", phone);
                       onSubmittedValueChange();
                     }}
+                    required
                     onBlur={handleBlur}
-                    value={values.mobile}
                   />
+                  <div className="invalid-feedback">{errors.mobile}</div>
                 </div>
               </div>
-              <div className="invalid-feedback">{errors.mobile}</div>
             </div>
 
             <div className="d-flex justify-content-end ">
